@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Exit Gap | Amplifi Research</title>
+<meta name="description" content="When a liquidation has no buyer, lenders pay. Who loses, how it has already happened, and how much of on-chain lending is exposed today.">
+<meta property="og:title" content="The Exit Gap: when a liquidation has no buyer, lenders pay">
+<meta property="og:description" content="13% of the collateral a 5% drop would push into liquidation can be sold on-chain. 89 lending markets, 9 chains, 12 October 2026.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{color-scheme:light;--bg:hsl(38 22% 94%);--card:#fffdf9;--ink:hsl(25 12% 12%);--muted:hsl(25 8% 38%);--line:hsl(35 16% 84%);--green:#14A761;--greenbg:rgba(20,167,97,.12);--navy:hsl(222 20% 10%);--rust:#b4532a;--track:hsl(35 18% 90%);
+--sans:"Inter",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 var(--sans)}
+.wrap{max-width:840px;margin:0 auto;padding-inline:20px}
+header{padding-block:22px;border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+header a{display:inline-flex} header .tag{font-size:13px;color:var(--muted)}
+main{padding-block:44px 40px}
+.kicker{font:500 13px var(--mono);color:var(--green)}
+h1{font-size:clamp(36px,6vw,54px);line-height:1.04;letter-spacing:-.025em;font-weight:700;margin:10px 0 18px}
+h2{font-size:24px;line-height:1.25;letter-spacing:-.015em;margin:0 0 12px;text-wrap:balance}
+p{margin:0 0 14px;max-width:66ch} .lede{font-size:19px}
+.figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:30px 0 8px}
+.fig{background:var(--card);border-radius:16px;padding:16px 16px 14px}
+.fig b{display:block;font-size:28px;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.fig span{display:block;font-size:13.5px;color:var(--muted);line-height:1.45;margin-top:6px}
+.fig.x b{color:var(--rust)}
+section{margin-top:54px}
+figure{margin:18px 0 10px;background:var(--card);border-radius:16px;padding:18px 18px 12px}
+figure svg{display:block;width:100%;height:auto}
+.key{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13.5px;color:var(--muted);margin-bottom:12px}
+.key i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+svg .lab{fill:var(--ink);font:500 13.5px var(--sans)} svg .sub{fill:var(--muted);font:12px var(--sans)}
+svg .bq{fill:var(--navy);opacity:.82} svg .bc{fill:var(--green)} svg .bx{fill:var(--rust)} svg .track{fill:var(--track)}
+svg .vq{fill:var(--ink);font:500 12.5px var(--mono)} svg .vc{fill:var(--green);font:500 12.5px var(--mono)} svg .vx{fill:var(--rust);font:500 12.5px var(--mono)}
+.tbl{overflow-x:auto;background:var(--card);border-radius:16px;margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:600px}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-top:1px solid var(--line)}
+thead th{border-top:0;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gr{display:inline-block;min-width:30px;text-align:center;font:600 12px var(--mono);padding:3px 6px;border-radius:6px}
+.gA,.gB{background:var(--greenbg);color:var(--green)} .gC{background:hsl(38 60% 88%);color:hsl(30 60% 32%)} .gD,.gF{background:rgba(180,83,42,.14);color:var(--rust)} .gNQ{background:var(--track);color:var(--muted)}
+details{margin-top:16px} summary{cursor:pointer;font-weight:600;color:var(--green)}
+.scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:14px 0;font-size:13.5px;color:var(--muted)}
+.scale div{background:var(--card);border-radius:12px;padding:10px 12px} .scale .gr{margin-bottom:4px}
+.fixes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.fx{background:var(--card);border-radius:16px;padding:16px 18px} .fx h3{font-size:16px;margin:0 0 6px} .fx p{font-size:15px;color:var(--muted);margin:0}
+.method{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)} .method p{max-width:none}
+a{color:var(--green)}
+footer{background:var(--navy);color:hsl(38 22% 88%);padding-block:30px;margin-top:40px;font-size:14.5px}
+footer p{margin:0;max-width:60ch} footer a{color:#4fd193}
+@media (max-width:720px){.figs,.fixes{grid-template-columns:repeat(2,minmax(0,1fr))} .scale{grid-template-columns:repeat(3,minmax(0,1fr))} body{font-size:16px}}
+@media (max-width:460px){.figs,.fixes{grid-template-columns:minmax(0,1fr)} .scale{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0 10px;counter-reset:s}
+.step{background:var(--card);border-radius:16px;padding:16px 18px;position:relative}
+.step b{display:block;font-size:16px;margin-bottom:4px} .step p{font-size:15px;color:var(--muted);margin:0}
+.step .n{font:600 12px var(--mono);color:var(--green);display:block;margin-bottom:6px}
+.forks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 8px}
+.fork{border-radius:16px;padding:14px 18px;font-size:15px}
+.fork b{display:block;margin-bottom:2px}
+.fork.ok{background:var(--greenbg)} .fork.bad{background:rgba(180,83,42,.12)}
+.case{background:var(--card);border-radius:16px;padding:18px 20px;margin:12px 0}
+.case .tagline{font:500 12.5px var(--mono);color:var(--muted);margin-bottom:6px}
+.case h3{font-size:18px;margin:0 0 8px}
+.case .nums{display:flex;flex-wrap:wrap;gap:8px 22px;margin:10px 0 8px}
+.case .nums div{font-size:13.5px;color:var(--muted)} .case .nums b{display:block;font-size:20px;color:var(--ink);font-variant-numeric:tabular-nums}
+.who{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.who div{background:var(--card);border-radius:16px;padding:14px 16px;font-size:15px;color:var(--muted)} .who b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+.honest{border-left:3px solid var(--green);padding:2px 0 2px 16px;margin:18px 0}
+@media (max-width:720px){.flow,.who{grid-template-columns:minmax(0,1fr)} .forks{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a href="https://amplifiliquidity.com" aria-label="Amplifi"><svg width="122" height="40" aria-label="Amplifi" viewBox="0 0 487 159" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.8127 50.8115C18.152 63.4722 4.91749 70.7648 4.4898 70.3371C4.06212 69.9094 11.3547 56.6749 24.0154 44.0142C36.6762 31.3534 48.4613 22.6115 50.3383 24.4885C52.2153 26.3655 43.4734 38.1507 30.8127 50.8115Z" fill="#14A761"/>
+<path d="M88.2853 108.284C75.6246 120.944 68.332 134.179 68.7597 134.606C69.1874 135.034 82.4218 127.742 95.0826 115.081C107.743 102.42 116.485 90.6349 114.608 88.7578C112.731 86.8808 100.946 95.6228 88.2853 108.284Z" fill="#14A761"/>
+<path d="M46.8114 66.813C26.3348 87.2896 5.68076 99.8346 4.84128 98.9951C4.0018 98.1556 16.5468 77.5015 37.0233 57.0249C57.4998 36.5483 76.2905 22.1399 78.9934 24.8428C81.6963 27.5457 67.2879 46.3364 46.8114 66.813Z" fill="#14A761"/>
+<path d="M72.2853 92.2846C51.8087 112.761 39.2638 133.415 40.1033 134.255C40.9427 135.094 61.5968 122.549 82.0734 102.073C102.55 81.5961 116.958 62.8054 114.255 60.1025C111.552 57.3996 92.7618 71.808 72.2853 92.2846Z" fill="#14A761"/>
+<path d="M66.0738 86.074C41.7652 110.383 16.8602 124.89 15.5338 123.563C14.2074 122.237 28.7144 97.3319 53.023 73.0232C77.3316 48.7146 99.9591 31.9301 103.563 35.5339C107.167 39.1378 90.3824 61.7654 66.0738 86.074Z" fill="#14A761"/>
+<path d="M153.892 122.048H140.209L170.801 37.1694H185.374L215.966 122.048H202.394L195.83 102.914H160.455L153.892 122.048ZM178.143 51.0749L164.46 91.3451H191.826L178.143 51.0749ZM218.986 122.048V60.0856H231.222V68.7626C233.892 65.2028 236.636 62.6813 239.455 61.198C242.347 59.6406 245.462 58.8619 248.799 58.8619C253.026 58.8619 256.623 59.789 259.59 61.643C262.63 63.4229 264.633 66.0557 265.597 69.5413C269.379 62.4217 275.646 58.8619 284.397 58.8619C291.294 58.8619 296.448 60.8272 299.86 64.7578C303.271 68.6884 304.977 74.2877 304.977 81.5556V122.048H292.74V83.558C292.74 78.8116 291.776 75.2518 289.848 72.8786C287.92 70.4313 285.176 69.2076 281.616 69.2076C277.982 69.2076 275.052 70.3942 272.828 72.7674C271.048 74.6956 269.787 77.18 269.045 80.2207C268.378 83.1872 268.044 87.0066 268.044 91.6788V122.048H255.919V83.558C255.919 78.9599 254.917 75.4372 252.915 72.9899C250.913 70.4683 248.132 69.2076 244.572 69.2076C242.792 69.2076 241.16 69.5413 239.677 70.2088C238.194 70.8762 236.933 71.8404 235.895 73.1011C234.263 74.881 233.077 77.2171 232.335 80.1095C231.593 83.0018 231.222 86.8583 231.222 91.6788V122.048H218.986ZM344.954 58.8619C350.368 58.8619 355.152 60.2339 359.305 62.9779C363.458 65.6478 366.647 69.4301 368.872 74.3248C371.171 79.2195 372.32 84.7817 372.32 91.0113C372.32 97.3152 371.171 102.914 368.872 107.809C366.647 112.704 363.458 116.523 359.305 119.267C355.152 121.937 350.368 123.272 344.954 123.272C340.875 123.272 337.39 122.567 334.497 121.158C331.605 119.675 328.787 117.079 326.043 113.371V144.965H313.806V60.0856H326.043V68.7626C328.787 65.1287 331.605 62.57 334.497 61.0868C337.39 59.6035 340.875 58.8619 344.954 58.8619ZM342.73 69.5413C339.318 69.5413 336.24 70.4683 333.496 72.3224C330.826 74.1023 328.713 76.6238 327.155 79.887C325.672 83.1501 324.931 86.8583 324.931 91.0113C324.931 95.1644 325.672 98.9097 327.155 102.247C328.713 105.51 330.826 108.069 333.496 109.923C336.24 111.703 339.318 112.593 342.73 112.593C347.995 112.593 352.185 110.59 355.3 106.585C358.489 102.507 360.084 97.3152 360.084 91.0113C360.084 84.7075 358.489 79.5532 355.3 75.5485C352.185 71.5437 347.995 69.5413 342.73 69.5413ZM393.531 122.048C388.711 122.048 385.077 120.936 382.629 118.711C380.182 116.486 378.958 112.741 378.958 107.475V37.1694H391.195V104.472C391.195 107.068 391.603 108.922 392.419 110.034C393.235 111.146 394.903 111.703 397.425 111.703H400.873V122.048H393.531ZM418.012 122.048H405.775V60.0856H418.012V122.048ZM411.894 51.4086C409.669 51.4086 407.74 50.667 406.109 49.1837C404.477 47.7005 403.661 45.8464 403.661 43.6215C403.661 41.3967 404.477 39.5426 406.109 38.0593C407.74 36.5761 409.669 35.8345 411.894 35.8345C414.193 35.8345 416.121 36.5761 417.678 38.0593C419.31 39.5426 420.126 41.3967 420.126 43.6215C420.126 45.8464 419.31 47.7005 417.678 49.1837C416.121 50.667 414.193 51.4086 411.894 51.4086ZM432.383 122.048V70.2088H422.594V60.0856H432.383V53.5222C432.383 48.1825 433.792 44.1407 436.61 41.3967C439.429 38.5785 443.545 37.1694 448.959 37.1694H457.636V47.2926H451.851C449.478 47.2926 447.698 47.923 446.511 49.1837C445.325 50.4445 444.731 52.4469 444.731 55.1909V60.0856H457.636V70.2088H444.731V122.048H432.383ZM479.551 122.048H467.314V60.0856H479.551V122.048ZM473.432 51.4086C471.207 51.4086 469.279 50.667 467.647 49.1837C466.016 47.7005 465.2 45.8464 465.2 43.6215C465.2 41.3967 466.016 39.5426 467.647 38.0593C469.279 36.5761 471.207 35.8345 473.432 35.8345C475.731 35.8345 477.659 36.5761 479.217 38.0593C480.848 39.5426 481.664 41.3967 481.664 43.6215C481.664 45.8464 480.848 47.7005 479.217 49.1837C477.659 50.667 475.731 51.4086 473.432 51.4086Z" fill="#14A761"/>
+</svg>
+</a><span class="tag">Research</span></div></header>
+<main class="wrap">
+<div class="kicker">The Exit Gap · Research note · 12 October 2026</div>
+<h1>When a liquidation has no buyer, lenders pay</h1>
+<p class="lede">On-chain lending protects lenders with one assumption: if a loan goes bad, someone will buy the collateral. When nobody can, the loan stays open and the loss moves to the people who deposited.</p>
+
+<section>
+<h2>What happens</h2>
+<div class="flow">
+<div class="step"><span class="n">1</span><b>The collateral falls</b><p>A loan drops below its safety margin and becomes eligible for liquidation.</p></div>
+<div class="step"><span class="n">2</span><b>Liquidators check the exit</b><p>They only act if selling the collateral repays the loan. Where the market for it is thin, the sale loses money, so nobody acts.</p></div>
+<div class="step"><span class="n">3</span><b>The loan stays open</b><p>The bad loan sits in the market. Then one of two things happens.</p></div>
+</div>
+<div class="forks">
+<div class="fork ok"><b>A private buyer steps in</b>A firm with its own balance sheet takes the collateral and holds it. Lenders are repaid. The risk now sits with one wallet.</div>
+<div class="fork bad"><b>Nobody steps in</b>The market fills to 100% borrowed, lenders can't withdraw, and the shortfall is eventually written off against them.</div>
+</div>
+</section>
+
+<section>
+<h2>Both have already happened</h2>
+<div class="case">
+<div class="tagline">PT-reUSD on Morpho, Ethereum · 25 August 2026</div>
+<h3>One buyer saved the lenders</h3>
+<p>A 2.8% price move set off a wave of liquidations. Before the move, on-chain markets could absorb about $5M of the collateral. Liquidators repaid $36.1M of loans, and one of them took about 96% of the collateral onto its own books instead of selling it.</p>
+<div class="nums"><div><b>$36.1M</b>loans repaid</div><div><b>~$5M</b>on-chain markets could absorb</div><div><b>96%</b>taken by one liquidator</div><div><b>$0</b>bad debt</div></div>
+</div>
+<div class="case">
+<div class="tagline">A yield-vault token on Morpho, HyperEVM · June 2026 to today</div>
+<h3>Nobody did, and lenders are still waiting</h3>
+<p>The collateral was priced at its issuer's own reported value, so when the token crashed, no liquidation ever triggered. The loans stayed open. Lenders have had nothing to withdraw since 22 June, and the borrow rate has sat at its maximum ever since.</p>
+<div class="nums"><div><b>$9.5M</b>borrowed at the peak</div><div><b>$0.71M</b>collateral value today</div><div><b>$0</b>withdrawable since 22 June</div></div>
+</div>
+<p class="honest">Outright losses are rare. In six lending incidents we studied from 2025 and 2026, none of the lender losses came from a missing buyer alone. They came from oracles that never moved and from exploits. Where the buyer was missing, as with PT-reUSD, one firm chose to absorb it. Lenders were protected by that choice, not by the market's design.</p>
+</section>
+
+<section>
+<h2>Who pays</h2>
+<div class="who">
+<div><b>Lenders and vault depositors</b>First and directly. Their money is stuck while the loan sits open, then written down.</div>
+<div><b>Curators</b>The vaults that allocated into the market take the outflows and the reputational hit.</div>
+<div><b>Issuers and chains</b>Risk teams respond by cutting caps. When Plasma's $300M backstop ended, Aave took its WETH cap from 120,000 to 1. Smaller caps mean less borrowing against the asset.</div>
+</div>
+<p style="margin-top:14px">The everyday cost is the third one. Most of the time nothing breaks. Caps stay low because the exit is thin, and the asset grows slower than it could.</p>
+</section>
+
+<section>
+<h2>How much is exposed today</h2>
+<div class="figs">
+<div class="fig"><b>89</b><span>Morpho markets with $5M or more borrowed, on 9 chains</span></div>
+<div class="fig"><b>$1.37B</b><span>collateral a 5% price drop would push into liquidation</span></div>
+<div class="fig x"><b>13%</b><span>of that can be sold on the same chain and still repay the loan</span></div>
+<div class="fig x"><b>23</b><span>markets where less than a quarter can be sold</span></div>
+</div>
+<p>Two USDe markets on Base and Robinhood Chain hold $700.2M of that. Their oracles hold USDe at $1 unless it trades more than 0.5% off peg for 16 hours, so they only reach liquidation in a sustained depeg. Without them, 26% of the remaining $674.0M can be sold.</p>
+<div class="tbl"><table>
+<thead><tr><th>Chain</th><th class="n">Borrowed</th><th class="n">At risk after 5% drop</th><th class="n">Can be sold</th><th class="n">Share</th></tr></thead>
+<tbody>
+<tr><td>Robinhood Chain</td><td class="n">$486.2M</td><td class="n">$490.4M</td><td class="n">$10.8M</td><td class="n">2%</td></tr>
+<tr><td>Ethereum</td><td class="n">$2.36B</td><td class="n">$432.7M</td><td class="n">$153.5M</td><td class="n">35%</td></tr>
+<tr><td>Base</td><td class="n">$2.13B</td><td class="n">$394.8M</td><td class="n">$8.0M</td><td class="n">2%</td></tr>
+<tr><td>Monad</td><td class="n">$102.9M</td><td class="n">$41.1M</td><td class="n">$1.1M</td><td class="n">3%</td></tr>
+<tr><td>Arbitrum</td><td class="n">$14.5M</td><td class="n">$15.3M</td><td class="n">$707K</td><td class="n">5%</td></tr>
+</tbody></table></div>
+<p>Liquidations settle in one transaction, so the sale has to happen on the chain where the loan lives. Ethereum has years of pools behind its collateral. Newer chains get the lending markets first and the liquidity later.</p>
+<details><summary>Every market, graded</summary>
+<p class="small" style="margin-top:10px">A: all of the 5% queue can be sold. B: half or more. C: a quarter or more. D: a tenth or more. F: less. NQ: under $25K near liquidation. The grade rates the exit, not the issuer or the asset.</p>
+<div class="tbl"><table>
+<thead><tr><th>Grade</th><th>Market</th><th>Chain</th><th class="n">Borrowed</th><th class="n">5% queue</th><th class="n">Can be sold</th></tr></thead>
+<tbody>
+<tr><td><span class="gr gF">F</span></td><td>USDe / USDC</td><td>Base</td><td class="n">$349.9M</td><td class="n">$355.5M</td><td class="n">$738K</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>USDe / USDG</td><td>Robinhood Chain</td><td class="n">$329.4M</td><td class="n">$344.7M</td><td class="n">$569K</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>syrupUSDG / USDG</td><td>Robinhood Chain</td><td class="n">$119.0M</td><td class="n">$108.7M</td><td class="n">$1.26M</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>syrupUSDC / PYUSD</td><td>Ethereum</td><td class="n">$52.0M</td><td class="n">$48.8M</td><td class="n">$3.54M</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>sUSDe / PYUSD</td><td>Ethereum</td><td class="n">$98.1M</td><td class="n">$42.5M</td><td class="n">$2.61M</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>mGLO / USDC</td><td>Base</td><td class="n">$34.8M</td><td class="n">$32.0M</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>mGLO / USDG</td><td>Robinhood Chain</td><td class="n">$29.5M</td><td class="n">$27.9M</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>wstETH / WETH</td><td>Monad</td><td class="n">$26.4M</td><td class="n">$20.2M</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>syrupUSDG / USDG</td><td>Arbitrum</td><td class="n">$14.5M</td><td class="n">$15.3M</td><td class="n">$707K</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>PT-USDat-14JAN2027 / USDC</td><td>Monad</td><td class="n">$22.9M</td><td class="n">$12.5M</td><td class="n">$1.06M</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>wsrUSD / USDC</td><td>Ethereum</td><td class="n">$10.7M</td><td class="n">$8.9M</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>strUSD / AUSD</td><td>Monad</td><td class="n">$6.0M</td><td class="n">$5.3M</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>mF-ONE / USDC</td><td>Ethereum</td><td class="n">$23.2M</td><td class="n">$5.2M</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>wUSCC / USDC</td><td>Ethereum</td><td class="n">$7.1M</td><td class="n">$3.9M</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gF">F</span></td><td>aHYPER / USDC</td><td>Monad</td><td class="n">$34.2M</td><td class="n">$3.0M</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gD">D</span></td><td>PRIME / PYUSD</td><td>Ethereum</td><td class="n">$189.1M</td><td class="n">$56.4M</td><td class="n">$5.95M</td></tr>
+<tr><td><span class="gr gD">D</span></td><td>PT-reUSD-10DEC2026 / USDC</td><td>Ethereum</td><td class="n">$108.7M</td><td class="n">$54.3M</td><td class="n">$12.57M</td></tr>
+<tr><td><span class="gr gD">D</span></td><td>USDe / RLUSD</td><td>Ethereum</td><td class="n">$45.7M</td><td class="n">$34.0M</td><td class="n">$3.86M</td></tr>
+<tr><td><span class="gr gD">D</span></td><td>USD3 / USDC</td><td>Ethereum</td><td class="n">$18.6M</td><td class="n">$18.6M</td><td class="n">$1.88M</td></tr>
+<tr><td><span class="gr gD">D</span></td><td>PT-USD3-17DEC2026 / USDC</td><td>Ethereum</td><td class="n">$23.2M</td><td class="n">$12.7M</td><td class="n">$2.73M</td></tr>
+<tr><td><span class="gr gD">D</span></td><td>PST / USDC</td><td>Ethereum</td><td class="n">$34.4M</td><td class="n">$11.7M</td><td class="n">$2.36M</td></tr>
+<tr><td><span class="gr gD">D</span></td><td>apyUSD / USDC</td><td>Ethereum</td><td class="n">$14.1M</td><td class="n">$3.8M</td><td class="n">$500K</td></tr>
+<tr><td><span class="gr gD">D</span></td><td>strUSD / USDC</td><td>Ethereum</td><td class="n">$12.4M</td><td class="n">$3.6M</td><td class="n">$569K</td></tr>
+<tr><td><span class="gr gC">C</span></td><td>PT-USDat-14JAN2027 / USDT</td><td>Ethereum</td><td class="n">$11.4M</td><td class="n">$9.3M</td><td class="n">$2.61M</td></tr>
+<tr><td><span class="gr gC">C</span></td><td>PT-apyUSD-5NOV2026 / apxUSD</td><td>Ethereum</td><td class="n">$5.3M</td><td class="n">$3.7M</td><td class="n">$1.19M</td></tr>
+<tr><td><span class="gr gB">B</span></td><td>apyUSD / apxUSD</td><td>Ethereum</td><td class="n">$5.9M</td><td class="n">$3.9M</td><td class="n">$2.23M</td></tr>
+<tr><td><span class="gr gB">B</span></td><td>fxSAVE / USDC</td><td>Ethereum</td><td class="n">$25.6M</td><td class="n">$1.3M</td><td class="n">$677K</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>wstETH / WETH</td><td>Ethereum</td><td class="n">$74.1M</td><td class="n">$33.0M</td><td class="n">$81.66M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>wstETH / WETH</td><td>Ethereum</td><td class="n">$20.1M</td><td class="n">$20.4M</td><td class="n">$21.91M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>sUSDS / USDT</td><td>Ethereum</td><td class="n">$50.3M</td><td class="n">$16.0M</td><td class="n">$55.24M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>weETH / WETH</td><td>Ethereum</td><td class="n">$12.4M</td><td class="n">$12.3M</td><td class="n">$13.42M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>spUSDG / USDG</td><td>Robinhood Chain</td><td class="n">$8.3M</td><td class="n">$9.0M</td><td class="n">$9.13M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>reUSD / USDC</td><td>Ethereum</td><td class="n">$9.2M</td><td class="n">$8.1M</td><td class="n">$10.25M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>stUSDS / USDC</td><td>Ethereum</td><td class="n">$8.4M</td><td class="n">$5.9M</td><td class="n">$11.05M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>PT-sUSDS-26NOV2026 / USDC</td><td>Ethereum</td><td class="n">$12.6M</td><td class="n">$5.4M</td><td class="n">$14.86M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>wstETH / WETH</td><td>Base</td><td class="n">$6.6M</td><td class="n">$4.5M</td><td class="n">$6.87M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>PT-sUSDE-26NOV2026 / USDC</td><td>Ethereum</td><td class="n">$7.0M</td><td class="n">$3.7M</td><td class="n">$3.86M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>cbETH / WETH</td><td>Base</td><td class="n">$8.0M</td><td class="n">$2.5M</td><td class="n">$4.03M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>PT-reUSD-10DEC2026 / USDT</td><td>Ethereum</td><td class="n">$10.0M</td><td class="n">$2.5M</td><td class="n">$11.85M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>sUSDS / USDT</td><td>Ethereum</td><td class="n">$11.0M</td><td class="n">$1.9M</td><td class="n">$12.14M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>siUSD / USDC</td><td>Ethereum</td><td class="n">$7.2M</td><td class="n">$382K</td><td class="n">$9.85M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>sUSDai / AUSD</td><td>Ethereum</td><td class="n">$6.2M</td><td class="n">$283K</td><td class="n">$7.66M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>SOL / USDC</td><td>Base</td><td class="n">$7.0M</td><td class="n">$128K</td><td class="n">$1.26M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>cbXRP / USDC</td><td>Base</td><td class="n">$56.9M</td><td class="n">$126K</td><td class="n">$339K</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>WBTC / USDC</td><td>Ethereum</td><td class="n">$116.1M</td><td class="n">$89K</td><td class="n">$32.42M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>cbBTC / USDT</td><td>Ethereum</td><td class="n">$18.7M</td><td class="n">$75K</td><td class="n">$29.73M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>WHYPE / USDC</td><td>HyperEVM</td><td class="n">$8.1M</td><td class="n">$57K</td><td class="n">$6.21M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>cirBTC / USDC</td><td>Arc</td><td class="n">$193.9M</td><td class="n">$29K</td><td class="n">$1.19M</td></tr>
+<tr><td><span class="gr gA">A</span></td><td>cbBTC / USDC</td><td>Ethereum</td><td class="n">$304.1M</td><td class="n">$28K</td><td class="n">$28.47M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>kHYPE / USDC</td><td>HyperEVM</td><td class="n">$6.1M</td><td class="n">$13K</td><td class="n">$4.79M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>cbETH / USDC</td><td>Base</td><td class="n">$14.2M</td><td class="n">$8K</td><td class="n">$4.39M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>cbBTC / USDC</td><td>Base</td><td class="n">$1.56B</td><td class="n">$6K</td><td class="n">$36.92M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>WETH / USDC</td><td>Base</td><td class="n">$93.0M</td><td class="n">$4K</td><td class="n">$73.84M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>savUSD / USDC</td><td>Ethereum</td><td class="n">$6.5M</td><td class="n">$4K</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>PRIME / AUSD</td><td>Ethereum</td><td class="n">$5.1M</td><td class="n">$3K</td><td class="n">$6.33M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>WBTC / USDT</td><td>Ethereum</td><td class="n">$78.3M</td><td class="n">$2K</td><td class="n">$32.42M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>wstETH / USDT</td><td>Ethereum</td><td class="n">$122.2M</td><td class="n">$1</td><td class="n">$67.71M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>OETH / USDC</td><td>Ethereum</td><td class="n">$9.6M</td><td class="n">$0</td><td class="n">$22.23M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>WETH / USDC</td><td>Ethereum</td><td class="n">$8.3M</td><td class="n">$0</td><td class="n">$16.96M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>kHYPE / USDC</td><td>HyperEVM</td><td class="n">$8.0M</td><td class="n">$0</td><td class="n">$5.00M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>kBTC / RLUSD</td><td>Ethereum</td><td class="n">$212.9M</td><td class="n">$0</td><td class="n">$3.69M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>kBTC / PYUSD</td><td>Ethereum</td><td class="n">$144.7M</td><td class="n">$0</td><td class="n">$3.86M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>weETH / RLUSD</td><td>Ethereum</td><td class="n">$89.2M</td><td class="n">$0</td><td class="n">$19.88M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>PST / PYUSD</td><td>Ethereum</td><td class="n">$57.9M</td><td class="n">$0</td><td class="n">$2.36M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>weETH / USDC</td><td>Ethereum</td><td class="n">$39.1M</td><td class="n">$0</td><td class="n">$35.36M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>wstETH / USDC</td><td>Ethereum</td><td class="n">$29.6M</td><td class="n">$0</td><td class="n">$60.00M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>weETH / PYUSD</td><td>Ethereum</td><td class="n">$26.7M</td><td class="n">$0</td><td class="n">$5.95M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>wFalconX / USDC</td><td>Ethereum</td><td class="n">$21.7M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>WBTC / RLUSD</td><td>Ethereum</td><td class="n">$17.8M</td><td class="n">$0</td><td class="n">$21.05M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>cbBTC / EURCV</td><td>Ethereum</td><td class="n">$13.4M</td><td class="n">$0</td><td class="n">$2.11M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>mWIN / PYUSD</td><td>Ethereum</td><td class="n">$13.3M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>dCOMP / USDC</td><td>Ethereum</td><td class="n">$13.3M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>vaSTETH / msETH</td><td>Ethereum</td><td class="n">$11.9M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>cbBTC / RLUSD</td><td>Ethereum</td><td class="n">$11.6M</td><td class="n">$0</td><td class="n">$6.21M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>wstETH / USDC</td><td>Ethereum</td><td class="n">$11.3M</td><td class="n">$0</td><td class="n">$22.64M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>wstETH / EURCV</td><td>Ethereum</td><td class="n">$8.6M</td><td class="n">$0</td><td class="n">$1.77M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>FXRP / RLUSD</td><td>Ethereum</td><td class="n">$8.0M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>mM1-USD / USDC</td><td>Ethereum</td><td class="n">$7.8M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>earnAUSD / USDC</td><td>Monad</td><td class="n">$7.3M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>sUSDai / USDT</td><td>Ethereum</td><td class="n">$6.9M</td><td class="n">$0</td><td class="n">$8.07M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>AA_FalconXUSDC / USDC</td><td>Ethereum</td><td class="n">$6.7M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>mROX / AUSD</td><td>Monad</td><td class="n">$6.1M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>PT-apyUSD-5NOV2026 / USDC</td><td>Ethereum</td><td class="n">$6.1M</td><td class="n">$0</td><td class="n">$1.49M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>sUSDat / AUSD</td><td>Ethereum</td><td class="n">$5.7M</td><td class="n">$0</td><td class="n">$49K</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>WBTC / USDT</td><td>Ethereum</td><td class="n">$5.7M</td><td class="n">$0</td><td class="n">$8.74M</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>wJAAA / USDC</td><td>Ethereum</td><td class="n">$5.3M</td><td class="n">$0</td><td class="n">$0</td></tr>
+<tr><td><span class="gr gNQ">NQ</span></td><td>kHYPE / USD₮0</td><td>HyperEVM</td><td class="n">$5.2M</td><td class="n">$0</td><td class="n">$2.23M</td></tr>
+</tbody></table></div>
+</details>
+</section>
+
+<section>
+<h2>What closes the gap</h2>
+<p>Turn the buyer that saved PT-reUSD lenders from luck into a commitment. Buy capacity sized to the largest liquidation a market can produce, posted as resting orders near fair value, funded by the issuer or the chain that wants the market to grow, and measured in public so lenders and risk teams can count it.</p>
+</section>
+
+<div class="method">
+<p><b>Method.</b> Every Morpho market with at least $5M borrowed, pulled 12 Oct 2026 15:21 UTC from Morpho's API. 46 markets were left out because their reported collateral is below their debt: mispriced tokens, or loans already stuck. The 5% queue is the collateral seizable from every open position whose health factor falls below 1 after a 5% oracle drop, capped at debt times the liquidation incentive. "Can be sold" is the largest sale on the same chain whose live route proceeds still repay the debt (proceeds of at least the sale divided by the liquidation incentive, LIF = min(1.15, 1 / (1 − 0.3 × (1 − LLTV)))). Routes from KyberSwap and Pendle, cross-checked against Velora. Gas, redemption queues and off-chain buyers are not counted. Markets on Katana, Stable have no aggregator coverage and are not graded. Case studies rebuilt from on-chain state at the event blocks; Second case re-read 12 October 2026.</p>
+</div>
+</main>
+<footer><div class="wrap"><p>Amplifi operates on-chain liquidity programs for token issuers, lending markets and chains. <a href="https://amplifiliquidity.com">amplifiliquidity.com</a></p></div></footer>
+</body>
+</html>
