@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Exit Gap | Amplifi Research</title>
-<meta name="description" content="When a liquidation has no buyer, lenders pay. Who loses, how it has already happened, and how much of on-chain lending is exposed today.">
-<meta property="og:title" content="The Exit Gap: when a liquidation has no buyer, lenders pay">
+<meta name="description" content="Every lending market sets its loan-to-value, oracle and caps. None sets who buys the collateral when loans go bad. Who pays, and how much is exposed today.">
+<meta property="og:title" content="Nobody owns the exit">
 <meta property="og:description" content="13% of the collateral a 5% drop would push into liquidation can be sold on-chain. 89 lending markets, 9 chains, 12 October 2026.">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary">
@@ -75,6 +75,9 @@ footer p{margin:0;max-width:60ch} footer a{color:#4fd193}
 .who{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
 .who div{background:var(--card);border-radius:16px;padding:14px 16px;font-size:15px;color:var(--muted)} .who b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
 .honest{border-left:3px solid var(--green);padding:2px 0 2px 16px;margin:18px 0}
+.view{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:26px 0 6px}
+.view div{background:var(--card);border-radius:16px;padding:16px 18px;font-size:15px;color:var(--muted)} .view b{display:block;color:var(--ink);font-size:16px;line-height:1.3;margin-bottom:6px}
+@media (max-width:720px){.view{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:720px){.flow,.who{grid-template-columns:minmax(0,1fr)} .forks{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
@@ -90,11 +93,16 @@ footer p{margin:0;max-width:60ch} footer a{color:#4fd193}
 </a><span class="tag">Research</span></div></header>
 <main class="wrap">
 <div class="kicker">The Exit Gap · Research note · 12 October 2026</div>
-<h1>When a liquidation has no buyer, lenders pay</h1>
-<p class="lede">On-chain lending protects lenders with one assumption: if a loan goes bad, someone will buy the collateral. When nobody can, the loan stays open and the loss moves to the people who deposited.</p>
+<h1>Nobody owns the exit</h1>
+<p class="lede">Every lending market sets its loan-to-value, its oracle and its caps. None of them sets who buys the collateral when loans go bad. Lenders are protected by whoever shows up, and a market can only safely grow as far as that buyer can absorb.</p>
+<div class="view">
+<div><b>No market commits to a buyer</b>Markets publish their loan-to-value, oracle and caps, but not who buys the collateral. A 5% price drop would put $1.37B of collateral up for liquidation across 89 Morpho markets. 13% of it can be sold on the same chain at a price that repays the loan.</div>
+<div><b>Today it comes down to luck</b>When the exit failed for PT-reUSD in August, one firm chose to absorb about $35M of collateral. Nothing obliged it to.</div>
+<div><b>Whoever wants the market to grow should own it</b>Issuers and chains benefit most from bigger caps. Committed, measured exit is what lets risk teams raise them.</div>
+</div>
 
 <section>
-<h2>What happens</h2>
+<h2>What happens when nobody buys</h2>
 <div class="flow">
 <div class="step"><span class="n">1</span><b>The collateral falls</b><p>A loan drops below its safety margin and becomes eligible for liquidation.</p></div>
 <div class="step"><span class="n">2</span><b>Liquidators check the exit</b><p>They only act if selling the collateral repays the loan. Where the market for it is thin, the sale loses money, so nobody acts.</p></div>
@@ -152,6 +160,7 @@ footer p{margin:0;max-width:60ch} footer a{color:#4fd193}
 <tr><td>Arbitrum</td><td class="n">$14.5M</td><td class="n">$15.3M</td><td class="n">$707K</td><td class="n">5%</td></tr>
 </tbody></table></div>
 <p>Liquidations settle in one transaction, so the sale has to happen on the chain where the loan lives. Ethereum has years of pools behind its collateral. Newer chains get the lending markets first and the liquidity later.</p>
+<p><a href="how-we-rate.html">Method, evidence rules and detail for every D and F market →</a></p>
 <details><summary>Every market, graded</summary>
 <p class="small" style="margin-top:10px">A: all of the 5% queue can be sold. B: half or more. C: a quarter or more. D: a tenth or more. F: less. NQ: under $25K near liquidation. The grade rates the exit, not the issuer or the asset.</p>
 <div class="tbl"><table>
@@ -249,8 +258,9 @@ footer p{margin:0;max-width:60ch} footer a{color:#4fd193}
 </section>
 
 <section>
-<h2>What closes the gap</h2>
-<p>Turn the buyer that saved PT-reUSD lenders from luck into a commitment. Buy capacity sized to the largest liquidation a market can produce, posted as resting orders near fair value, funded by the issuer or the chain that wants the market to grow, and measured in public so lenders and risk teams can count it.</p>
+<h2>Who should own the exit</h2>
+<p>The issuer of the collateral or the chain hosting the market. They gain most when caps go up, and caps go up when risk teams can count the exit. That means buy capacity sized to the largest liquidation the market can produce, posted as resting orders near fair value, committed in advance and measured in public. The buyer that saved PT-reUSD lenders becomes a commitment instead of luck.</p>
+<p><a href="how-we-rate.html">How we rate exits, and every market's grade →</a></p>
 </section>
 
 <div class="method">
